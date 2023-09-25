@@ -1,0 +1,18 @@
+version: '2.3'
+
+services:
+  pavlov:
+    build: .
+    volumes:
+    # Edit Here
+    - /PATH-YOU-WANT/Game.ini:/home/steam/pavlovserver/Pavlov/Saved/Config/LinuxServer/Game.ini
+    # - /PATH-YOU-WANT/mods.txt:/home/steam/pavlovserver/Pavlov/Saved/Config/mods.txt
+    # - /PATH-YOU-WANT/RconSettings.txt:/home/steam/pavlovserver/Pavlov/Saved/Config/RconSettings.txt
+    # - /PATH-YOU-WANT/blacklist.txt:/home/steam/pavlovserver/Pavlov/Saved/Config/blacklist.txt
+    # - /PATH-YOU-WANT/whitelist.txt:/home/steam/pavlovserver/Pavlov/Saved/Config/whitelist.txt
+    environment:
+    - PORT=7500
+    ports:
+    - 7500:7500/udp
+    - 7900:7900/udp
+    - 9100:9100/tcp
