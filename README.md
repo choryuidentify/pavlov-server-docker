@@ -2,20 +2,35 @@
 
 This container updates Pavlov VR and Steam on start.
 
-```
-docker run --name pavlov -d \
-  -p 7777:7777/udp \
-  -p 8177:8177/udp \
-  -p 9100:9100/tcp \ #optional default Rcon port
-  -v $HOME/pavlov/Game.ini:/home/steam/pavlovserver/Pavlov/Saved/Config/LinuxServer/Game.ini \
-  -v $HOME/pavlov/mods.txt:/home/steam/pavlovserver/Pavlov/Saved/Config/mods.txt \ #optional
-  -v $HOME/pavlov/RconSettings.txt:/home/steam/pavlovserver/Pavlov/Saved/Config/RconSettings.txt \ #optional, create port forwarding as required
-  -v $HOME/pavlov/blacklist.txt:/home/steam/pavlovserver/Pavlov/Saved/Config/blacklist.txt \ #optional
-  -v $HOME/pavlov/whitelist.txt:/home/steam/pavlovserver/Pavlov/Saved/Config/whitelist.txt \ #optional
-  -e PORT=7777 \ # optional defaults to 7777
-  --restart unless-stopped \
-  gregology/pavlov-server:latest
-```
+- Method A - Docker Compose
+  ```
+  # First, edit your docker-compose.yml volumes to match your directory.
+  nano docker-compose.yml
+  
+  # And run it.
+  sudo docker compose up -d
+  # or sudo docker-compose up -d
+  ```
+
+- Method B - Docker
+  ```
+  # Build it
+  docker build . -t choryuidentify/pavlov-server:latest
+
+  # Run it.
+  docker run --name pavlov -d \
+    -p 7500:7500/udp \
+    -p 7900:7900/udp \
+    -p 9100:9100/tcp \ #optional default Rcon port
+    -v $HOME/pavlov/Game.ini:/home/steam/pavlovserver/Pavlov/Saved/Config/LinuxServer/Game.ini \
+    -v $HOME/pavlov/mods.txt:/home/steam/pavlovserver/Pavlov/Saved/Config/mods.txt \ #optional
+    -v $HOME/pavlov/RconSettings.txt:/home/steam/pavlovserver/Pavlov/Saved/Config/RconSettings.txt \ #optional, create port forwarding as required
+    -v $HOME/pavlov/blacklist.txt:/home/steam/pavlovserver/Pavlov/Saved/Config/blacklist.txt \ #optional
+    -v $HOME/pavlov/whitelist.txt:/home/steam/pavlovserver/Pavlov/Saved/Config/whitelist.txt \ #optional
+    -e PORT=7500 \ # optional defaults to 7500
+    --restart unless-stopped \
+    choryuidentify/pavlov-server:latest
+  ```
 
 The second port is always 400 higher than the defined port. If you use port 7000 you will also need to forward port 7400. Refer to the [docs](http://wiki.pavlov-vr.com/index.php?title=Dedicated_server#Firewall.2FPort_forwarding) for more infomation on ports and port forwarding.
 
@@ -66,31 +81,6 @@ Increasing the player load increases memory & CPU usage.
 | BabyArmour - Escape The Dead |        16 | Escape The Dead: Aftermath   | 140.95% | 1.011GiB / 31.26GiB | 3.23% | 251MB / 1.28GB  | 821MB / 142MB |
 
 Note: the other two servers are still running, I just removed them for clarity.
-
-### Free hosting options
-
-A server with 1Gb of ram can run a small map with a few players which means there are free VMs capable of running Pavlov server. Oracle offers a free VM which can comfortably run a small Pavlov server. This video shows a server with 4 players running smoothly on a free Oracle VM.
-
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/hCEoyOKGP08/0.jpg)](https://www.youtube.com/watch?v=hCEoyOKGP08)
-
-Here is that server's `Game.ini` file.
-
-```
-[/Script/Pavlov.DedicatedServer]
-bEnabled=true
-ServerName=Oracle free tier VM
-bSecured=true
-bCustomServer=true
-LimitedAmmoType=0
-TimeLimit=0
-MaxPlayers=4
-#MapRotation=(MapId="UGC1411741987", GameMode="DM") # Office 4.21
-#MapRotation=(MapId="UGC2006865873", GameMode="DM") # Construction Small
-MapRotation=(MapId="UGC2252266456", GameMode="DM") # Laser Tag Small
-```
-
-
-If you're having issues, please submit an [issue](https://github.com/gregology/pavlov-server-docker/issues) and ping me.
 
 ### Build
 
